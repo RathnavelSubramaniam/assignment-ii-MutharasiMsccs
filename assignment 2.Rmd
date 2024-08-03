@@ -1,0 +1,178 @@
+---
+title: "Assignment2"
+author: "mutharasi"
+date: "2024-08-03"
+output: html_document
+---
+1. In this exercise you will create some simulated data and will fit simple linear regression models to it. Make sure to use set.seed(1) prior to starting part (a) to ensure consistent results.rnorm
+
+a.	Using the rnorm() function, create a vector, “x”, containing 100 observations drawn from a N(0,1) distribution. This represents a feature, X.
+
+b.	Using the rnorm() function, create a vector, “eps”, containing 100 observations drawn from a N(0,0.25) distribution.
+
+```{r}
+set.seed(1)
+x=rnorm(100)
+eps=rnorm(100,mean = 0,sd=sqrt(0.25))
+```
+c.	Using “x” and “eps”, generate a vector “y” according to the model
+Y=−1+0.5X+ε.
+What is the length of the vector “y” ? What are the values of β0 and β1 in this linear model ?
+
+```{r}
+y=-1+0.5*x+eps
+length(y)
+```
+the values of β0 and β1 in this linear model is 1-1,0.5.
+
+d.	Create a scatterplot displaying the relationship between “x” and “y”. Comment on what you observe.
+```{r}
+plot(x,y)
+```
+e.	Fit a least squares linear model to predict “y” using “x”. Comment on the model obtained. How do β^0 and β^1 compare to β0 and β1 ?
+```{r}
+fit3=lm(y~x)
+summary(fit3)
+```
+there is no different between β^0 and β^1 compare to β0 and β1 .
+
+f.	Display the least squares line on the scatterplot obtained in (d). Draw the population regression line on the plot, in a different color. Use the legend() function to create an appropriate legend.
+```{r}
+plot(x,y)
+abline(fit3,col="blue")
+abline(coef = c(-1,0.5),col="red")
+legend("topleft",c("LR","PR"),col=c("blue","red"),lty = c(1,2))
+```
+
+2.  This problem involves the “Boston” data set, which we saw in the lab for this chapter. We will now try to predict per capita crime rate using the other variables in this data set. In other words, per capita crime rate is the response, and the other variables are the predictors.
+
+a.	For each predictor, fit a simple linear regression model to predict the response. Describe your results. In which of the models is there a statistically significant association between the predictor and the response ? Create some plots to back up your assertions.
+
+```{r}
+library(MASS)
+library(ISLR)
+```
+
+```{r}
+attach(Boston)
+names(Boston)
+```
+```{r}
+fit1 = lm(crim ~ zn )
+summary(fit1)
+```
+Coefficient: -0.07393 (Negative)
+p-value: 5.51e-06
+Statistically significant
+
+```{r}
+fit2 = lm(crim ~ indus )
+summary(fit2)
+```
+Coefficient: 0.50978(Positive)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit3 = lm(crim ~ chas )
+summary(fit3)
+```
+Coefficient: -1.8928(Negative)
+p-value: 0.209
+Statistically Non significant
+
+```{r}
+fit4 = lm(crim ~ nox )
+summary(fit4)
+```
+Coefficient: 31.249(Positive)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit5 = lm(crim ~rm )
+summary(fit5)
+```
+Coefficient: -2.684(Negative)
+p-value: 6.35e-07
+Statistically significant
+
+```{r}
+fit6 = lm(crim ~age )
+summary(fit6)
+```
+Coefficient: 0.10779
+p-value: 2.85e-16
+Statistically significant
+
+```{r}
+fit7 = lm(crim ~dis )
+summary(fit7)
+```
+Coefficient: -1.5509(Negative)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit8 = lm(crim ~rad )
+summary(fit8)
+```
+Coefficient: 0.61791(Positive)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit9 = lm(crim ~tax )
+summary(fit9)
+```
+Coefficient: 0.029742(Positive)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit10 = lm(crim ~ptratio)
+summary(fit10)
+```
+Coefficient: 1.1520(Positive)
+p-value: 2.94e-11
+Statistically significant
+
+```{r}
+fit11 = lm(crim ~black)
+summary(fit11)
+```
+Coefficient: -0.036280(Negative)
+p-value: < 2e-16
+Statistically significant
+```{r}
+fit12 = lm(crim ~lstat)
+summary(fit12)
+```
+Coefficient: -0.36316(Negative)
+p-value: < 2e-16
+Statistically significant
+
+```{r}
+fit13 = lm(crim ~medv)
+summary(fit13)
+```
+Coefficient: -0.36316
+p-value: < 2e-16
+Statistically significant
+
+
+b.	Fit a multiple regression model to predict the response using all of the predictors. Describe your results. For which predictors can we reject the null hypothesis H0:βj=0 ?
+
+```{r}
+fit0 = lm (crim ~., data=Boston)
+summary(fit0)
+```
+##Interpretation
+
+Significant Predictors:zn,dis,rad,black,medv
+
+Near Significance:nox,1stat
+
+Non-significant Predictors:indus, chas, rm, age, tax, ptratio
+
+
